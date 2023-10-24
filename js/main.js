@@ -1,43 +1,110 @@
-
 let optionActive = false;
 let loaded = false;
 let mounted = false;
+
+
+
+const Settings = {
+    OPTION_MARGIN_X : 35,
+    OPTION_MARGIN_Y : 35,
+
+    Backdrop : {
+        FILL : 0xFFE9F4,
+        STROKE : 0xFF7286,
+        WIDTH : window.innerWidth - 500,
+        HEIGHT : window.innerHeight - 200,
+        STROKE_SIZE : 10,
+        BOX_ROUNDING : 20,
+    },
+
+    Category : {
+        FILL : 0xFFFFFF,
+        STROKE : 0xFF7286,
+        WIDTH : 230,
+        HEIGHT : 70,
+        STROKE_SIZE : 5,
+        FONT_SIZE : 36,
+        BOX_WIDTH : 250,
+        BOX_HEIGHT : 75,
+        BOX_ROUNDING : 10,
+        FONT : 'Choko'
+    },
+
+    Option : {
+        FILL : 0xFFE9F4,
+        STROKE : 0xFF7286,
+        WIDTH : 230,
+        HEIGHT : 70,
+        STROKE_SIZE : 5,
+        FONT_SIZE : 40,
+        BOX_WIDTH : 250,
+        BOX_HEIGHT : 75,
+        BOX_ROUNDING : 10,
+        FONT : 'Choko'
+    },
+
+    Modal : {
+        FILL : 0xFFE9F4,
+        STROKE : 0xFF7286,
+        WIDTH : 800,
+        HEIGHT : 500,
+        STROKE_SIZE : 10,
+        BOX_ROUNDING : 20,
+        FONT : 'Verdana',
+        TITLE_FONT_SIZE : 40,
+        TITLE_COLOR : 0x000000,
+        CONTENT_FONT_SIZE : 36,
+        CONTENT_COLOR : 0x000000,
+        VALUE_FONT_SIZE : 50,
+        VALUE_COLOR : 0xFF7286,
+    }
+}
 
 class Game {
     constructor(){
 
     }
 
+    /**
+     * Initializes the game.
+     */
     init() {
-        //Init PIXI application
+        // Initialize PIXI application
         this.application = new PIXI.Application({
-            width : window.innerWidth,
-            height : window.innerHeight,
+            width: window.innerWidth,
+            height: window.innerHeight,
             devicePixelRatio: 1,
-            backgroundColor : 0xF3BBFF,
-            view : document.getElementById('game')
+            backgroundColor: 0xffe9f4,
+            view: document.getElementById('game'),
+            antialias: true,
         });
 
-        //Add root container to center of screen
+        // Add root container to center of screen
         this.root = new PIXI.Container();
         this.overlay = new PIXI.Container();
 
         this.application.stage.addChild(this.root);
         this.application.stage.addChild(this.overlay);
 
+        // Add loading spinner to overlay
         this.spinner = new LoadingSpinner();
         this.spinner.draw();
         this.overlay.addChild(this.spinner);
 
+        // Resize application on window resize
         window.onresize = () => this.resize();
         this.resize();
 
+        // Load game assets
         this.loader = new PIXI.Loader();
         this.loader.add('gameData', 'js/gameData.json');
-        this.loader.add('bg', 'textures/bg.png');
+        this.loader.add('starEmitter', 'js/starEmitter.json');
+        this.loader.add('bg', 'textures/gradient.jpg');
+        this.loader.add('star', 'textures/star.png');
         this.loader.add('pause', 'textures/pause.png');
         this.loader.add('play', 'textures/play.png');
 
+        // Load game sounds
         this.soundLoader = new SoundLoader(() => this.onSoundLoaded());
         this.soundLoader.add('naruto.mp3', 'sound/naruto.mp3');
         this.soundLoader.add('hunterxhunter.mp3', 'sound/hunterxhunter.mp3');
@@ -46,7 +113,15 @@ class Game {
         this.soundLoader.add('yuyuhakusho.mp3', 'sound/yuyuhakusho.mp3');
         this.soundLoader.load();
 
+        //Add update function to pixi ticker
+        this.application.ticker.add((e) => this.update(e));
+
+
+        // Listen for key events
         document.addEventListener('keyup', (e) => this.onKeyUp(e));
+    }
+
+    update(e) {
     }
 
     onSoundLoaded(){
@@ -55,53 +130,83 @@ class Game {
         this.loader.load();
     }
 
-    onLoaded(){
+    /**
+     * Callback function for when game assets are loaded.
+     * @private
+     */
+    onLoaded() {
+        // Set loaded flag to true
         loaded = true;
 
+        // Hide loading spinner
         this.spinner.visible = false;
+
+        // Load game data
         this.gameData = this.loader.resources.gameData.data;
         console.log(this.gameData);
-        //Add Category
+
+        // Add category container to screen
         this.screen = new PIXI.Container();
         this.root.addChild(this.screen);
 
+        // Initialize categories
         this.categories = [];
-
         let bg = new PIXI.Sprite(this.loader.resources.bg.texture);
         bg.anchor.set(0.5);
-        bg.scale.set(1.5);
+        //bg.scale.set(1.5);
         this.screen.addChild(bg);
+
+        //Intialize background star emitter
+        let starContainer = new PIXI.Container();
+        starContainer.emitter = new PIXI.particles.Emitter(starContainer, PIXI.particles.upgradeConfig(this.loader.resources.starEmitter.data, [this.loader.resources.star.texture]));
+        starContainer.emitter.autoUpdate = true;
+
+        starContainer.y -= 1000;
+        this.screen.addChild(starContainer);
+
+        this.starContainer = starContainer;
+
+
+        //Initialize the BG Modal
+        let bgModal = new PIXI.Graphics();
+        
+        let w = Settings.Backdrop.WIDTH;
+        let h = Settings.Backdrop.HEIGHT;
+        let r = 20;
+        
+        bgModal.lineStyle(Settings.Backdrop.STROKE_SIZE, Settings.Backdrop.STROKE);
+        bgModal.beginFill(Settings.Backdrop.FILL);
+        bgModal.drawRoundedRect(-w/2, -h/2, w, h, r);
+        bgModal.endFill();
+        this.screen.addChild(bgModal);
+
         let categoryContainer = new PIXI.Container();
         let categoryWidth, categoryHeight;
-
         this.screen.addChild(categoryContainer);
         this.gameData.forEach((element, i) => {
-            
             let category = new Category(element.name, element.options, (c,v) => this.onOptionClick(c,v));
             category.draw();
-
-            category.x = (category.boxWidth + 20) * i;
+            category.x = (category.boxWidth + Settings.OPTION_MARGIN_X) * i;
             categoryWidth = category.boxWidth;
             categoryHeight = category.boxHeight;
-
             this.categories.push(category);
-
-
             categoryContainer.addChild(category)
         });
-        
+
+        // Position category container
         categoryContainer.x = -( (categoryContainer.width) / 2) + categoryWidth / 2;
         categoryContainer.y = -( (categoryContainer.height) / 2) + categoryHeight / 2;
 
+        // Initialize option screen
         let optionScreen = new OptionScreen(this.gameData, (c,v,r) => this.onOptionConfirm(c,v,r));
         optionScreen.draw();
         optionScreen.visible= false;
         this.optionScreen = optionScreen;
         this.screen.addChild(optionScreen);
 
+        // Set mounted flag to true
         mounted = true;
     }
-
     onKeyUp(e) {
         if(!loaded || !mounted) return;
         
@@ -202,7 +307,7 @@ class SoundLoader {
 }
 
 class Category extends PIXI.Container {
-    constructor(name, options, clickCallback, fontSize = 32, boxWidth = 230, boxHeight = 70, bgColor = 0xF6E498, lineColor = 0xE8B279, strokeSize = 2){
+    constructor(name, options, clickCallback, fontSize = Settings.Category.FONT_SIZE, boxWidth = Settings.Category.BOX_WIDTH, boxHeight = Settings.Category.BOX_HEIGHT, bgColor = Settings.Category.FILL, lineColor = Settings.Category.STROKE, strokeSize = Settings.Category.STROKE_SIZE){
         super();
         this.bgColor = bgColor;
         this.lineColor = lineColor;
@@ -213,8 +318,9 @@ class Category extends PIXI.Container {
         this.name = name;
         this.textStyle = new PIXI.TextStyle({
             align : 'center',
-            fontFamily : 'Choko',
-            fontSize : fontSize
+            fontFamily : Settings.Category.FONT,
+            fontSize : fontSize,
+            fontWeight : 'bold',
         })
         this.options = options;
 
@@ -235,7 +341,7 @@ class Category extends PIXI.Container {
 
         graphics.lineStyle({color : this.lineColor, width : this.strokeSize})
         graphics.beginFill(this.bgColor);
-        graphics.drawRect(-this.boxWidth/2, -this.boxHeight/2, this.boxWidth, this.boxHeight);
+        graphics.drawRoundedRect(-this.boxWidth/2, -this.boxHeight/2, this.boxWidth, this.boxHeight, 10);
         graphics.endFill();
 
         
@@ -247,13 +353,20 @@ class Category extends PIXI.Container {
 
         this.options.forEach((o,i) => {
             let option = this.createOption(o);
-            option.y += (option.boxHeight + 10) * (i+1);
+            option.y += (option.boxHeight + Settings.OPTION_MARGIN_Y) * (i+1);
         });
     }
 }
 
 class OptionScreen extends PIXI.Container {
-    constructor(gameData, onConfirm, fontSize = 32, boxWidth = 230, boxHeight = 70, bgColor = 0xF6E498, lineColor = 0xE8B279, strokeSize = 2){
+    constructor(gameData, onConfirm, 
+        fontSize = Settings.Modal.FONT_SIZE, 
+        boxWidth = Settings.Modal.BOX_WIDTH,
+        boxHeight = Settings.Modal.BOX_HEIGHT,
+        bgColor = Settings.Modal.FILL,
+        lineColor = Settings.Modal.STROKE,
+        strokeSize = Settings.Modal.STROKE_SIZE
+    ){
         super();
         this.bgColor = bgColor;
         this.lineColor = lineColor;
@@ -262,44 +375,50 @@ class OptionScreen extends PIXI.Container {
         this.strokeSize = strokeSize;
         this.onConfirm = onConfirm;
 
-        this.contentStroke = 10;
-        this.contentLineColor = 0xBEFDF7;
-        this.contentBGColor = 0xF9D9FC;
+        this.contentStroke = strokeSize;
+        this.contentLineColor = lineColor;
+        this.contentBGColor = bgColor;
         this.contentWidth = 800;
         this.contentHeight = 500;
         
         this.textStyle = new PIXI.TextStyle({
             align : 'center',
-            fontFamily : 'Choko',
+            fontFamily : 'Verdana',
             fontSize : fontSize
         })
         this.gameData = gameData;
 
         this.contentTextStyle = new PIXI.TextStyle({
             align : 'center',
-            fontFamily : 'Choko',
-            fontSize : 50,
+            fontFamily : Settings.Modal.FONT,
+            fontSize : Settings.Modal.CONTENT_FONT_SIZE,
+            fill : Settings.Modal.CONTENT_COLOR,
             wordWrap : true,
             wordWrapWidth : 670
         });
 
         this.categoryTextStyle = new PIXI.TextStyle({
             align : 'right',
-            fontFamily : 'Arial',
-            fontSize : 36,
-            fill: 0x595959
+            fontFamily : Settings.Category.FONT,
+            fontWeight : 'bold',
+            fontSize : Settings.Modal.TITLE_FONT_SIZE,
+            fill: Settings.Modal.TITLE_COLOR
         });
 
         this.valueTextStyle = new PIXI.TextStyle({
             align : 'left',
-            fontFamily : 'Arial',
-            fontSize : 36,
-            fill : 0xFFC319
+            fontFamily : Settings.Option.FONT,
+            fontSize : Settings.Modal.VALUE_FONT_SIZE,
+            fill : Settings.Modal.VALUE_COLOR,
+            strokeThickness : 10,
+            stroke : "#FFFFFF",
+            lineJoin : "round",
+            fontWeight : "bold"
         });
 
         this.backTextStyle = new PIXI.TextStyle({
             align : 'center',
-            fontFamily : 'Arial',
+            fontFamily : 'Verdana',
             fontSize : 36,
             fill : 0x6D9EEB
         });
@@ -340,7 +459,7 @@ class OptionScreen extends PIXI.Container {
 
         contentBG.lineStyle({color : this.contentLineColor, width : this.contentStroke})
         contentBG.beginFill(this.contentBGColor);
-        contentBG.drawRect(-this.contentWidth/2, -this.contentHeight/2, this.contentWidth, this.contentHeight);
+        contentBG.drawRoundedRect(-this.contentWidth/2, -this.contentHeight/2, this.contentWidth, this.contentHeight, Settings.Modal.BOX_ROUNDING);
         contentBG.endFill();
 
         content.addChild(contentBG);
@@ -362,7 +481,7 @@ class OptionScreen extends PIXI.Container {
         content.addChild(valueText);
         this.valueText = valueText;
 
-        let backText = new PIXI.Text("⬅ Back to Panel", this.backTextStyle);
+        let backText = new PIXI.Text("⬅", this.backTextStyle);
         backText.anchor.set(0.5);
         backText.position.set(0, 300);
         backText.interactive = true;
@@ -458,7 +577,14 @@ const OptionTypes = {
     IMAGE: 2
 }
 class GameOption extends PIXI.Container {
-    constructor(value, answer, type, category, clickCallback, fontSize = 32, boxWidth = 230, boxHeight = 66.66, bgColor = 0xF6E498, lineColor = 0xE8B279, strokeSize = 2){
+    constructor(value, answer, type, category, clickCallback, 
+        fontSize = Settings.Option.FONT_SIZE, 
+        boxWidth = Settings.Option.BOX_WIDTH, 
+        boxHeight = Settings.Option.BOX_HEIGHT, 
+        bgColor = Settings.Option.FILL, 
+        lineColor = Settings.Option.STROKE, 
+        strokeSize = Settings.Option.STROKE_SIZE
+    ){
         super();
         this.bgColor = bgColor;
         this.lineColor = lineColor;
@@ -474,13 +600,13 @@ class GameOption extends PIXI.Container {
 
         this.frontTextStyle = new PIXI.TextStyle({
             align : 'center',
-            fontFamily : 'Arial',
+            fontFamily : Settings.Option.FONT,
             fontSize : fontSize,
-            fill : 0xFFC319,
-            dropShadow : true,
-            dropShadowColor : 'black',
-            dropShadowDistance : 4, 
-            dropShadowBlur: 3
+            fill : Settings.Backdrop.STROKE,
+            fontWeight : "bold",
+            strokeThickness : 10,
+            stroke : "#FFFFFF",
+            lineJoin : "round",
         });
 
         this.state;
@@ -494,7 +620,7 @@ class GameOption extends PIXI.Container {
 
         frontBG.lineStyle({color : this.lineColor, width : this.strokeSize})
         frontBG.beginFill(this.bgColor);
-        frontBG.drawRect(-this.boxWidth/2, -this.boxHeight/2, this.boxWidth, this.boxHeight);
+        frontBG.drawRoundedRect(-this.boxWidth/2, -this.boxHeight/2, this.boxWidth, this.boxHeight, Settings.Option.BOX_ROUNDING);
         frontBG.endFill();
 
         front.addChild(frontBG);
