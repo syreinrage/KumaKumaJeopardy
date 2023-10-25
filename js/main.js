@@ -269,6 +269,23 @@ class LoadingSpinner extends PIXI.Container {
     }
 }
 
+class AnswerText extends PIXI.Container {
+    constructor() {
+        super();
+    }
+
+    draw() {
+        this.sprite = new PIXI.Sprite.from('textures/kumalogo.png');
+        this.sprite.anchor.set(0.5,0.75);
+
+        this.addChild(this.sprite);
+
+        this.sprite.rotation = -Math.PI*0.125;
+        let tween = gsap.to(this.sprite, {rotation : Math.PI*0.125, yoyo : true, duration : 1, ease:"Back.easeInOut", repeat : -1});
+        tween.play();
+    }
+}
+
 class SoundLoader {
     constructor(loadComplete) {
         this.resources = {};
@@ -403,6 +420,15 @@ class OptionScreen extends PIXI.Container {
             wordWrapWidth : 670
         });
 
+        this.answerTextStyle = new PIXI.TextStyle({
+            align : 'center',
+            fontFamily : Settings.Modal.FONT,
+            fontSize : Settings.Modal.TITLE_FONT_SIZE,
+            fill : Settings.Modal.CONTENT_COLOR,
+            wordWrap : true,
+            wordWrapWidth : 670
+        });
+
         this.categoryTextStyle = new PIXI.TextStyle({
             align : 'right',
             fontFamily : Settings.Category.FONT,
@@ -444,14 +470,15 @@ class OptionScreen extends PIXI.Container {
         if(option.type == 'sound') {
             this.contentText.visible = false;
             this.soundControl.visible = true;
-
+            this.answerText.visible = false;
+            this.answerText.text = option.name;
             this.sound = option.answer;
         }
 
         if(option.type == 'text') {
             this.contentText.visible = true;
             this.soundControl.visible = false;
-
+            this.answerText.visible = false;
             this.contentText.text = option.answer;
         }
 
@@ -474,6 +501,14 @@ class OptionScreen extends PIXI.Container {
         contentText.anchor.set(0.5);
         content.addChild(contentText);
         this.contentText = contentText;
+
+        let answerText = new PIXI.Text(this.answer, this.answerTextStyle);
+        answerText.anchor.set(0.5, -1);
+        // answerText.position.set(42, -209);
+        answerText.visible = false;
+        content.addChild(answerText);
+        this.answerText = answerText;
+
 
         let categoryText = new PIXI.Text(this.category + " · ", this.categoryTextStyle);
         categoryText.anchor.set(1,0.5);
@@ -543,6 +578,9 @@ class OptionScreen extends PIXI.Container {
         if(e.code == 'KeyF') {
             this.onPlay();
         }
+        if(e.code == 'KeyA') {
+            this.onToggleAnswer();
+        }
     }
 
 
@@ -581,6 +619,17 @@ class OptionScreen extends PIXI.Container {
         }
 
         this.visible = false;
+        this.answerText.visible = false;
+    }
+
+    onToggleAnswer(e) {
+        if(this.sound) {
+            let resource = game.soundLoader.resources[this.sound];
+            this.answerText.visible = ! this.answerText.visible;
+        } else {
+            this.answerText.visible = false;
+        }
+
     }
 }
 

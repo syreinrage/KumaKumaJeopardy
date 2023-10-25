@@ -5,28 +5,34 @@
             {
                 "answer" : "Digimon.mp3",
                 "value" : 200,
-                "type" : "sound"
+                "type" : "sound",
+                "name" : "Digimon"
             },
             {
                 "answer" : "Attack on Titan Final Season Opening 2  The Rumbling.mp3",
                 "value" : 400,
-                "type" : "sound"
+                "type" : "sound",
+                "name" : "Attack on Titan Final Season Opening 2  The Rumbling"
 
             },
             {
                 "answer" : "Oshi no Ko Opening - IDOL.mp3",
                 "value" : 600,
-                "type" : "sound"
+                "type" : "sound",
+                "name" : "Oshi no Ko Opening - IDOL"
+
             },
             {
                 "answer" : "Jujutsu Kaisen Opening 4 - SPECIALZ.mp3",
                 "value" : 800,
-                "type" : "sound"
+                "type" : "sound",
+                "name" : "Jujutsu Kaisen Opening 4 - SPECIALZ"            
             },
             {
                 "answer" : "CHAINSAW MAN Opening - KICK BACK.mp3",
                 "value" : 1000,
-                "type" : "sound"
+                "type" : "sound",
+                "name" : "CHAINSAW MAN Opening - KICK BACK"            
             }
         ]
     },{
@@ -35,28 +41,33 @@
             {
                 "answer" : "the most unreliable pokemon for pretty much...anything...but if you try to eat it you'll be in for a much more dragon-formed surprise",
                 "value" : 200,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
 
             },
             {
-                "answer" : "This pokemons 'Roll out' was the bane of most trainers fight with Whitney",
+                "answer" : "This pokemon's 'Roll out' was the bane of most trainers fight with Whitney due to it's tank like abilities.",
                 "value" : 400,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             },
             {
                 "answer" : "This pokemon waves its hands wildly in intimidation and warning that if you come closer it will utterly destroy you. Shame cuz it looks so lovable and cute",
                 "value" : 600,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             },
             {
                 "answer" : "This pokemon is famously rumored as being a specific by-product of another fairy pokemon's shadow",
                 "value" : 800,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             },
             {
                 "answer" : "This pokemon is the fifth one mentioned in the Pokemon rap",
                 "value" : 1000,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             }
         ]
     },{
@@ -65,27 +76,32 @@
             {
                 "answer" : "You wake up not knowing what's happening, but you have to save the world along with a flying thing constantly screaming at you",
                 "value" : 200,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             },
             {
                 "answer" : "a furry capitalist forces you into a life of public service",
                 "value" : 400,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             },
             {
                 "answer" : "Animals try to save other animals who are used to power robots...I guess they technically save the world from world domination by doing that",
                 "value" : 600,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             },
             {
                 "answer" : "Schizophrenic wakes up in a weird bathtub and is told by a dead guy that he needs to find his four dead friends to save his daughter",
                 "value" : 800,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             },
             {
                 "answer" : "Giant ball of light enslaves creatures in solar system while cult like aliens invade the solar system...oh yea you gotta fight them too",
                 "value" : 1000,
-                "type" : "text"
+                "type" : "text",
+                "name" :""
             }
         ]
     }
