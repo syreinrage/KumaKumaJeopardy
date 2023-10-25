@@ -3,28 +3,28 @@
         "name" : "Anime Theme",
         "options" : [
             {
-                "answer" : "naruto.mp3",
+                "answer" : "Digimon.mp3",
                 "value" : 200,
                 "type" : "sound"
             },
             {
-                "answer" : "souleater.mp3",
+                "answer" : "Attack on Titan Final Season Opening 2  The Rumbling.mp3",
                 "value" : 400,
                 "type" : "sound"
 
             },
             {
-                "answer" : "demonslayer.mp3",
+                "answer" : "Oshi no Ko Opening - IDOL.mp3",
                 "value" : 600,
                 "type" : "sound"
             },
             {
-                "answer" : "yuyuhakusho.mp3",
+                "answer" : "Jujutsu Kaisen Opening 4 - SPECIALZ.mp3",
                 "value" : 800,
                 "type" : "sound"
             },
             {
-                "answer" : "hunterxhunter.mp3",
+                "answer" : "CHAINSAW MAN Opening - KICK BACK.mp3",
                 "value" : 1000,
                 "type" : "sound"
             }

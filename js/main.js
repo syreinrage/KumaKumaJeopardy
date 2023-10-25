@@ -106,11 +106,11 @@ class Game {
 
         // Load game sounds
         this.soundLoader = new SoundLoader(() => this.onSoundLoaded());
-        this.soundLoader.add('naruto.mp3', 'sound/naruto.mp3');
-        this.soundLoader.add('hunterxhunter.mp3', 'sound/hunterxhunter.mp3');
-        this.soundLoader.add('demonslayer.mp3', 'sound/demonslayer.mp3');
-        this.soundLoader.add('souleater.mp3', 'sound/souleater.mp3');
-        this.soundLoader.add('yuyuhakusho.mp3', 'sound/yuyuhakusho.mp3');
+        this.soundLoader.add('Digimon.mp3', 'sound/Digimon.mp3');
+        this.soundLoader.add('Attack on Titan Final Season Opening 2  The Rumbling.mp3', 'sound/Attack on Titan Final Season Opening 2  The Rumbling.mp3');
+        this.soundLoader.add('Oshi no Ko Opening - IDOL.mp3', 'sound/Oshi no Ko Opening - IDOL.mp3');
+        this.soundLoader.add('Jujutsu Kaisen Opening 4 - SPECIALZ.mp3', 'sound/Jujutsu Kaisen Opening 4 - SPECIALZ.mp3');
+        this.soundLoader.add('CHAINSAW MAN Opening - KICK BACK.mp3', 'sound/CHAINSAW MAN Opening - KICK BACK.mp3');
         this.soundLoader.load();
 
         //Add update function to pixi ticker
