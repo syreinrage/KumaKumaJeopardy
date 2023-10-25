@@ -283,7 +283,13 @@ class SoundLoader {
         Object.entries(this.resources).forEach(([k,e]) => {
             console.log(`Loading sound ${k} from ${e.url}`);
             let sound = new Howl({
-                src : e.url
+                src : e.url,
+                sprite: {
+                    four: [0, 3000],
+                    six: [0, 5000],
+                    seven: [0, 7000],
+                    full: [0, 30000]
+                  }
             });
 
             e.sound = sound;
@@ -525,19 +531,32 @@ class OptionScreen extends PIXI.Container {
             if(this.onConfirm) this.onConfirm(this.currentCategory  , this.currentOption.value, true);
             this.onBack();
         }
+        if(e.code == 'KeyP') {
+            this.onPlay('four');
+        }
+        if(e.code == 'KeyO') {
+            this.onPlay('six');
+        }
+        if(e.code == 'KeyI') {
+            this.onPlay('seven');
+        }
+        if(e.code == 'KeyF') {
+            this.onPlay();
+        }
     }
 
 
-    onPlay() {
-        console.log('onPlay');
-
+    onPlay(e) {
         let resource = game.soundLoader.resources[this.sound];
-
+        this.play.visible = false;
+        this.pause.visible = true;
         if(resource) {
-            resource.sound.play();
-
-            this.play.visible = false;
-            this.pause.visible = true;
+            if (e === undefined || e == null || e == "undefined") {
+                resource.sound.play('full');
+            }                
+            else {
+                resource.sound.play(e);
+            }
         }
     }
 
