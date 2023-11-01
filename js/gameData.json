@@ -39,14 +39,14 @@
         "name" : "Pokémon",
         "options" : [
             {
-                "answer" : "the most unreliable pokemon for pretty much...anything...but if you try to eat it you'll be in for a much more dragon-formed surprise",
+                "answer" : "worlds MOST unreliable pokemon for pretty much...anything...but if you try to eat it you'll be in for a much more dragon-formed surprise",
                 "value" : 200,
                 "type" : "text",
-                "name" :""
+                "name" :"Magikarp"
 
             },
             {
-                "answer" : "This pokemon's 'Roll out' was the bane of most trainers fight with Whitney due to it's tank like abilities.",
+                "answer" : "This pokemon's an adorable ghost...but its self conscious about it and will end you if you peek under its costume",
                 "value" : 400,
                 "type" : "text",
                 "name" :""
@@ -64,44 +64,44 @@
                 "name" :""
             },
             {
-                "answer" : "This pokemon is the fifth one mentioned in the Pokemon rap",
+                "answer" : "This pokemon pretends to guide people and Pokémon around by illuminating darkened areas. However, it is sucking away their life energy and leading them to the Ghost World.",
                 "value" : 1000,
                 "type" : "text",
-                "name" :""
+                "name" :"Litwick"
             }
         ]
     },{
         "name" : "Name the Game",
         "options" : [
             {
-                "answer" : "You wake up not knowing what's happening, but you have to save the world along with a flying thing constantly screaming at you",
+                "answer" : "a furry capitalist forces you into a life of public service",
                 "value" : 200,
                 "type" : "text",
-                "name" :""
+                "name" :"Animal Crossing"
             },
             {
-                "answer" : "a furry capitalist forces you into a life of public service",
+                "answer" : "THE ARROWS. THE ARROWS. OH GOD, UP DOWN LEFT RIGHT. I CANNOT MOVE MY FEET THIS FAST.",
                 "value" : 400,
                 "type" : "text",
-                "name" :""
+                "name" :"Dance Dance Revolution"
             },
             {
-                "answer" : "Animals try to save other animals who are used to power robots...I guess they technically save the world from world domination by doing that",
+                "answer" : "DnD the video game",
                 "value" : 600,
                 "type" : "text",
-                "name" :""
+                "name" :"Baldur's Gate"
             },
             {
-                "answer" : "Schizophrenic wakes up in a weird bathtub and is told by a dead guy that he needs to find his four dead friends to save his daughter",
+                "answer" : "Clear your client's name by breaking into crime scenes (mostly illegally of course) and screaming at your opponents",
                 "value" : 800,
                 "type" : "text",
-                "name" :""
+                "name" :"Ace Attorney "
             },
             {
-                "answer" : "Giant ball of light enslaves creatures in solar system while cult like aliens invade the solar system...oh yea you gotta fight them too",
+                "answer" : "Boy wakes up and chases a ghost girl's image to never find her and later discover they are actually a dragon",
                 "value" : 1000,
                 "type" : "text",
-                "name" :""
+                "name" :"Zelda | Tears of the Kingdom"
             }
         ]
     }
