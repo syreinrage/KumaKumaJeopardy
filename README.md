@@ -1,7 +1,3 @@
-Certainly! Based on the structure and contents of the repository, here's a sample `README.md` file for the [KumaKumaJeopardy](https://github.com/syreinrage/KumaKumaJeopardy) project:
-
----
-
 # KumaKumaJeopardy
 
 **KumaKumaJeopardy** is a Jeopardy-style quiz game built with HTML, CSS, and JavaScript. It features custom fonts, textures, and sound effects to create an engaging and interactive experience. This has been created specifically for the Kuma Kuma Maid Cafe Panel
